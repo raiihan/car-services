@@ -3,12 +3,14 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const navigate = useNavigate();
     const location = useLocation();
+    let errorLogin;
 
     const from = location.state?.from?.pathname || "/";
     const [
@@ -17,7 +19,9 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
-
+    if (error) {
+        errorLogin = <p className='text-danger'>Error: {error?.message} </p>
+    }
     if (user) {
         navigate(from, { replace: true })
     }
@@ -46,11 +50,13 @@ const Login = () => {
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                {errorLogin}
+                <Button variant="success" type="submit" className='w-50 mx-auto d-block my-1'>
                     Login
                 </Button>
             </Form>
-            <p>New to Car Genius Service? <Link to="/register" className='text-decoration-none pe-auto'>Please Register</Link></p>
+            <p className='text-center'>New to Car Genius Service? <Link to="/register" className='text-decoration-none pe-auto'>Please Register</Link></p>
+            <SocialLogin />
         </div>
     );
 };
