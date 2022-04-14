@@ -37,11 +37,15 @@
     color: white;
     border-radius: 5px;
     font-size: 16px;
-
+    margin-top: 7px;
 }
 
 .register-btn:hover {
     background-color: #086439;
+}
+
+.register-btn:disabled {
+    background-color: #19875495;
 }
 
 .register-form p {
@@ -52,4 +56,5 @@
 .register-form p>a {
     text-decoration: none;
     cursor: pointer;
+    color: #0D6EFD;
 }

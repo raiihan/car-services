@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import { async } from '@firebase/util';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -19,6 +20,7 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
     if (error) {
         errorLogin = <p className='text-danger'>Error: {error?.message} </p>
     }
@@ -30,6 +32,11 @@ const Login = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         signInWithEmailAndPassword(email, password)
+    }
+
+    const resetPassword = async () => {
+        const email = emailRef.current.value;
+        await sendPasswordResetEmail(email);
     }
     return (
         <div className='container w-50 mx-auto'>
@@ -47,15 +54,15 @@ const Login = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
                 {errorLogin}
-                <Button variant="success" type="submit" className='w-50 mx-auto d-block my-1'>
+                <Button
+                    variant="success"
+                    type="submit" className='w-50 mx-auto d-block my-1'>
                     Login
                 </Button>
             </Form>
-            <p className='text-center'>New to Car Genius Service? <Link to="/register" className='text-decoration-none pe-auto'>Please Register</Link></p>
+            <p className='text-center'>New to Car Genius Service? <Link to="/register" className='text-primary text-decoration-none pe-auto'>Please Register</Link></p>
+            <p className='text-center'>Forget Password? <Link to="/login" className='text-primary text-decoration-none pe-auto' onClick={resetPassword}>Reset Password</Link></p>
             <SocialLogin />
         </div>
     );
