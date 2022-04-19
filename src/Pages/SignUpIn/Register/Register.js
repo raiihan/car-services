@@ -5,6 +5,8 @@ import './Register.css';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { async } from '@firebase/util';
+import Loading from '../../Shared/Loading/Loading';
+import PageTitle from '../../Shared/PageTitle/PageTitle';
 
 const Register = () => {
     const [agree, setAgree] = useState(false);
@@ -18,6 +20,10 @@ const Register = () => {
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
     if (user) {
         console.log('user', user)
+    }
+
+    if (loading || updating) {
+        return <Loading />
     }
 
     const handleRegister = async e => {
@@ -34,6 +40,7 @@ const Register = () => {
     }
     return (
         <div className='register-form'>
+            <PageTitle title={'Register'} />
             <h2>Please Register</h2>
             <form onSubmit={handleRegister}>
                 <div className='form-input'>

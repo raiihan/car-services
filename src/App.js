@@ -10,11 +10,15 @@ import NotFound from './Pages/Shared/NotFound/NotFound';
 import Login from './Pages/SignUpIn/Login/Login';
 import Register from './Pages/SignUpIn/Register/Register';
 import RequireAuth from './Pages/SignUpIn/RequireAuth/RequireAuth';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <div>
       <Header></Header>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/home" element={<Home></Home>}></Route>
