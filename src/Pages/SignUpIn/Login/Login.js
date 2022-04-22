@@ -30,6 +30,8 @@ const Login = () => {
     }
     if (user) {
         navigate(from, { replace: true })
+
+        toast('Login success')
     }
     if (loading || sending) {
         return <Loading />
@@ -39,7 +41,6 @@ const Login = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         signInWithEmailAndPassword(email, password)
-        toast('Login success')
     }
 
     const resetPassword = async () => {

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import './Register.css';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
-import { async } from '@firebase/util';
 import Loading from '../../Shared/Loading/Loading';
 import PageTitle from '../../Shared/PageTitle/PageTitle';
 
 const Register = () => {
     const [agree, setAgree] = useState(false);
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || "/";
     const [
         createUserWithEmailAndPassword,
         user,
@@ -19,7 +21,7 @@ const Register = () => {
     ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
     if (user) {
-        console.log('user', user)
+        navigate(from, { replace: true })
     }
 
     if (loading || updating) {
@@ -35,8 +37,6 @@ const Register = () => {
 
         await createUserWithEmailAndPassword(email, password)
         await updateProfile({ displayName: name });
-        navigate('/');
-        console.log('Updated profile');
     }
     return (
         <div className='register-form'>

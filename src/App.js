@@ -13,6 +13,8 @@ import RequireAuth from './Pages/SignUpIn/RequireAuth/RequireAuth';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import AddService from './Pages/AddService/AddService';
+import ManageServices from './Pages/ManageServices/ManageServices';
 
 function App() {
   return (
@@ -28,6 +30,12 @@ function App() {
         <Route path='register' element={<Register />} />
         <Route path='/checkout' element={<RequireAuth>
           <Checkout />
+        </RequireAuth>} />
+        <Route path='/addservice' element={<RequireAuth>
+          <AddService />
+        </RequireAuth>} />
+        <Route path='/manage' element={<RequireAuth>
+          <ManageServices />
         </RequireAuth>} />
         <Route path='*' element={<NotFound />} />
       </Routes>
